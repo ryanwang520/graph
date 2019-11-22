@@ -1,0 +1,97 @@
+scalar Datetime
+
+directive @adminonly on FIELD_DEFINITION
+
+directive @needsPermission(permission: String) on FIELD_DEFINITION
+
+
+
+type Bind {
+  first:String
+  second:String
+}
+
+type Query {
+  viewer: User
+  bindable: Bind
+  testUnion: Error @needsPermission(permission:"admin")
+}
+
+"""
+Current User [URL](https://en.wikipedia.org/wiki/URL)
+"""
+type User {
+  "search result"
+  search: SearchResult
+  "user name"
+  name: String!
+  userName: String!
+  id: ID!
+  image: Image
+  parent(level:Int!): String!
+  age: Int!
+  createdAt: Datetime!
+  status: UserStatus!
+  followers:UserPagination
+}
+
+type UserPagination {
+  total: Int!
+  items: [User!]
+}
+
+
+type Image {
+  sm: String!
+  md: String!
+  lg: String
+}
+
+type LoginPayload {
+  status: Boolean!
+}
+
+input LoginInput {
+  username: String!
+  time: Datetime
+}
+
+type Mutation {
+  login(input:LoginInput!): LoginPayload!
+  logout: Boolean!
+}
+type NotFoundError {
+  message: String!
+}
+
+type AccessError {
+  code: Int!
+}
+
+union Error = NotFoundError | AccessError
+
+interface SearchResult {
+  summary: String
+  url: String
+}
+
+type Client implements SearchResult {
+  first_name: String
+  last_name: String
+  summary: String
+  url: String
+}
+
+type Order implements SearchResult {
+  ref: String
+  client: Client
+  summary: String
+  url: String
+}
+
+type Product implements SearchResult {
+  name: String
+  sku: String
+  summary: String
+  url: String
+}
