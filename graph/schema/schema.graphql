@@ -30,6 +30,7 @@ type User {
   image: Image
   parent(level:Int!): String!
   age: Int!
+  fullname: String!
   createdAt: Datetime!
   status: UserStatus!
   followers:UserPagination
@@ -57,7 +58,7 @@ input LoginInput {
 }
 
 type Mutation {
-  login(input:LoginInput!): LoginPayload!
+  login(input:LoginInput!, a:Int): LoginPayload!
   logout: Boolean!
 }
 type NotFoundError {
