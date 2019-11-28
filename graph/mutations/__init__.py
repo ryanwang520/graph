@@ -1,4 +1,4 @@
-from ariadne import MutationType
+from graph.graphql import Type
 
 
 class ApiException(Exception):
@@ -6,12 +6,11 @@ class ApiException(Exception):
         self.message = message
 
 
-mutation = MutationType()
+mutation = Type('Mutation')
 
 
-@mutation.field('login')
-def resolve_login(obj, info, input, a=None):
-    # raise ApiException('login failed')
+@mutation
+def login(*_, input, a=None):
     print(a)
     print(type(input.get('time')))
     print(input['username'])

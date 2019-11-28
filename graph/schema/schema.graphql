@@ -3,6 +3,15 @@ scalar Datetime
 directive @adminonly on FIELD_DEFINITION
 
 directive @needsPermission(permission: String) on FIELD_DEFINITION
+type Shooping {
+  test:Boolean!
+}
+
+
+type Test {
+  test:String!
+}
+
 
 
 
@@ -96,3 +105,10 @@ type Product implements SearchResult {
   summary: String
   url: String
 }
+
+enum UserStatus{
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+

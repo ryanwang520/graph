@@ -2,14 +2,12 @@ import datetime
 from dataclasses import dataclass
 
 
-
 @dataclass
 class User:
     id: int
     name: str
     user_name: str
     image: dict = None
-
 
     @property
     def age(self):
@@ -24,11 +22,5 @@ class User:
         return datetime.datetime.utcnow()
 
     @property
-    def status(self,):
+    def status(self, ):
         return "ACTIVE"
-
-
-
-
-
-

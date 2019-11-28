@@ -1,25 +1,27 @@
-from ariadne import ObjectType
+from graph.graphql import Type
+from graph.models import User
 
-from graph.model import User
-
-user = ObjectType("User")
+user = Type("User")
 
 user.set_alias("name", "fullname")
 
 
-@user.field("userName")
+@user
 def user_name(*_):
     return 'resolved user name'
 
-@user.field("search")
+
+@user
 def search(*_):
-    from graph.app import Client
+    from graph.resolvers.search_result import Client
     return Client(first_name='client')
 
-@user.field("followers")
-def followers(self, info):
-    return {'total':10, 'items':[User(user_name='first', id=2, name='n',)]}
 
-@user.field("parent")
-def parent(self, info, level):
+@user
+def followers(*_):
+    return {'total': 10, 'items': [User(user_name='first', id=2, name='n', )]}
+
+
+@user
+def parent(*_, level):
     return f'parent {level}'
