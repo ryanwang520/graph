@@ -1,4 +1,6 @@
-from graph.graphql import Type
+from ariadne import MutationType
+
+from graph.graphql import Resolver
 
 
 class ApiException(Exception):
@@ -6,12 +8,20 @@ class ApiException(Exception):
         self.message = message
 
 
-mutation = Type('Mutation')
+mutation = MutationType()
+
+resolver = Resolver(mutation)
 
 
-@mutation
+@resolver
 def login(*_, input, a=None):
     print(a)
-    print(type(input.get('time')))
-    print(input['username'])
+    print(type(input.get("time")))
+    print(input["username"])
     return {"status": True}
+
+
+@resolver
+def logout(*_, n=None):
+    print(n)
+    return {"status": False}

@@ -21,6 +21,7 @@ type Bind {
 }
 
 type Query {
+  pet: Pet!
   viewer: User
   bindable: Bind
   testUnion: Error @needsPermission(permission:"admin")
@@ -34,7 +35,7 @@ type User {
   search: SearchResult
   "user name"
   name: String!
-  userName: String!
+  userName: String!  @deprecated(reason: "Use `name field`.")
   id: ID!
   image: Image
   parent(level:Int!): String!
@@ -68,8 +69,13 @@ input LoginInput {
 
 type Mutation {
   login(input:LoginInput!, a:Int): LoginPayload!
-  logout: Boolean!
+  logout(n:Int): LoginPayload!
 }
+
+type Pet {
+  name: String!
+}
+
 type NotFoundError {
   message: String!
 }
@@ -107,8 +113,8 @@ type Product implements SearchResult {
 }
 
 enum UserStatus{
-  ACTIVE
-  INACTIVE
-  BANNED
+  STANDARD
+  PINNED
+  PROMOTED
 }
 

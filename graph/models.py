@@ -15,12 +15,12 @@ class User:
 
     @property
     def fullname(self):
-        return 'full name'
+        return "full name"
 
     @property
     def created_at(self):
         return datetime.datetime.utcnow()
 
     @property
-    def status(self, ):
+    def status(self,):
         return "ACTIVE"

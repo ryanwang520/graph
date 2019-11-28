@@ -6,25 +6,18 @@ from graphql import GraphQLError
 
 from graph.directives import PermissionDirective
 from graph.extensions import QueryExecutionTimeExtension
-from graph.graphql import create_server
-from graph.mutations import mutation, ApiException
-from graph.resolvers.query import query
-from graph.resolvers.user import user
-from graph.resolvers.bindable import bindable
-from graph.resolvers.error import error
-from graph.resolvers.search_result import search_result
-from graph.scalars import datetime_scalar
+from graph.graphql import create_server, Resolver
+from graph.helpers import preload_module
+from graph.mutations import ApiException
 
 type_defs = load_schema_from_path(os.path.join(os.path.dirname(__file__), "schema"))
+
+preload_module("graph.resolvers")
+
 resolvers = [
-    query,
-    user,
-    bindable,
-    error,
-    search_result,
-    datetime_scalar,
-    mutation]
-directives = {"needsPermission": PermissionDirective, }
+    *Resolver.resolvers,
+]
+directives = {"needsPermission": PermissionDirective}
 extensions = [ApolloTracingExtensionSync, QueryExecutionTimeExtension]
 
 

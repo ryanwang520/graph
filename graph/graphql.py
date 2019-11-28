@@ -1,30 +1,46 @@
-from ariadne import ObjectType, graphql_sync, snake_case_fallback_resolvers, make_executable_schema
+from ariadne import (
+    ObjectType,
+    graphql_sync,
+    snake_case_fallback_resolvers,
+    make_executable_schema,
+)
 from ariadne.constants import PLAYGROUND_HTML
 from flask import jsonify, request, Flask
 
 from graph.helpers import convert_snake_case_to_camel
 
 
-class Type(ObjectType):
+class Resolver:
+    resolvers = []
+
+    def __init__(self, type_obj):
+        self.resolver = type_obj
+        self.resolvers.append(self.resolver)
+
     def field(self, name_or_fn):
+        if not hasattr(self.resolver, "field"):
+            raise AttributeError("resolver type has no `field` attribute")
         if isinstance(name_or_fn, str):
-            return super().field(name_or_fn)
+            return self.resolver.field(name_or_fn)
 
         fn = name_or_fn
 
         fn_name = fn.__name__
 
-        return super().field(convert_snake_case_to_camel(fn_name))(fn)
+        return self.resolver.field(convert_snake_case_to_camel(fn_name))(fn)
 
     def __call__(self, *args, **kwargs):
         return self.field(*args, **kwargs)
 
+    def __getattr__(self, item):
+        return getattr(self.resolver, item)
 
-def create_server(type_defs, resolvers, directives=None, extensions=None, error_formatter=None):
+
+def create_server(
+    type_defs, resolvers, directives=None, extensions=None, error_formatter=None
+):
     schema = make_executable_schema(
-        type_defs,
-        *resolvers, snake_case_fallback_resolvers,
-        directives=directives,
+        type_defs, *resolvers, snake_case_fallback_resolvers, directives=directives,
     )
     app = Flask(__name__)
 

@@ -1,10 +1,14 @@
 from ariadne import UnionType
 
-error = UnionType("Error")
+from graph.graphql import Resolver
 
 
-@error.type_resolver
 def resolve_error_type(obj, *_):
     if obj.get("code"):
         return "AccessError"
     return "NotFoundError"
+
+
+error = UnionType("Error", resolve_error_type)
+
+Resolver(error)

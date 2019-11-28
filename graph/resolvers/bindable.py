@@ -1,6 +1,8 @@
 from ariadne import SchemaBindable
 from graphql import GraphQLSchema
 
+from graph.graphql import Resolver
+
 
 class Bindable(SchemaBindable):
     def __init__(self, name):
@@ -13,3 +15,5 @@ class Bindable(SchemaBindable):
 
 
 bindable = Bindable("Bind")
+
+Resolver(bindable)
