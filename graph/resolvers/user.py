@@ -1,11 +1,7 @@
-from ariadne import ObjectType
-
-from graph.graphql import Resolver
+from graph.graphql import ObjectTypeResolver
 from graph.models import User
 
-user = ObjectType("User")
-
-resolver = Resolver(user)
+resolver = ObjectTypeResolver("User")
 
 resolver.set_alias("name", "fullname")
 
@@ -30,3 +26,8 @@ def followers(*_):
 @resolver
 def parent(*_, level):
     return f"parent {level}"
+
+
+@resolver
+def status(*_):
+    return 1

@@ -7,16 +7,15 @@ from graphql import GraphQLError
 from graph.directives import PermissionDirective
 from graph.extensions import QueryExecutionTimeExtension
 from graph.graphql import create_server, Resolver
-from graph.helpers import preload_module
-from graph.mutations import ApiException
+from graph.helpers import preload_module, ApiException
 
 type_defs = load_schema_from_path(os.path.join(os.path.dirname(__file__), "schema"))
 
 preload_module("graph.resolvers")
+preload_module("graph.mutations")
 
-resolvers = [
-    *Resolver.resolvers,
-]
+resolvers = Resolver.resolvers
+
 directives = {"needsPermission": PermissionDirective}
 extensions = [ApolloTracingExtensionSync, QueryExecutionTimeExtension]
 

@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from typing import NamedTuple
 
-from ariadne import InterfaceType
-
-from graph.graphql import Resolver
+from graph.graphql import InterfaceResolver
 
 
 def resolve_search_result_type(obj, *_):
@@ -16,11 +14,7 @@ def resolve_search_result_type(obj, *_):
     return None
 
 
-search_result = InterfaceType("SearchResult", resolve_search_result_type)
-
-Resolver(search_result)
-
-resolver = Resolver(search_result)
+resolver = InterfaceResolver("SearchResult", resolve_search_result_type)
 
 
 @resolver

@@ -1,10 +1,6 @@
-from ariadne import ObjectType
+from graph.graphql import ObjectTypeResolver
 
-from graph.graphql import Resolver
-
-pet = ObjectType("Pet")
-
-resolver = Resolver(pet)
+resolver = ObjectTypeResolver("Pet")
 
 
 @resolver

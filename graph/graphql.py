@@ -3,6 +3,7 @@ from ariadne import (
     graphql_sync,
     snake_case_fallback_resolvers,
     make_executable_schema,
+    InterfaceType,
 )
 from ariadne.constants import PLAYGROUND_HTML
 from flask import jsonify, request, Flask
@@ -15,7 +16,19 @@ class Resolver:
 
     def __init__(self, type_obj):
         self.resolver = type_obj
-        self.resolvers.append(self.resolver)
+        Resolver.resolvers.append(self.resolver)
+
+
+class ObjectTypeResolver(Resolver):
+    def __init__(self, name_or_obj_type):
+        if isinstance(name_or_obj_type, str):
+            resolver = ObjectType(name_or_obj_type)
+        else:
+            resolver = name_or_obj_type
+        super().__init__(resolver)
+
+    def set_alias(self, name, to):
+        self.resolver.set_alias(name, to)
 
     def field(self, name_or_fn):
         if not hasattr(self.resolver, "field"):
@@ -32,8 +45,11 @@ class Resolver:
     def __call__(self, *args, **kwargs):
         return self.field(*args, **kwargs)
 
-    def __getattr__(self, item):
-        return getattr(self.resolver, item)
+
+class InterfaceResolver(ObjectTypeResolver):
+    def __init__(self, name, type_resolver):
+        resolver = InterfaceType(name, type_resolver)
+        super().__init__(resolver)
 
 
 def create_server(

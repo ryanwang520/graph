@@ -24,7 +24,7 @@ type Query {
   pet: Pet!
   viewer: User
   bindable: Bind
-  testUnion: Error @needsPermission(permission:"admin")
+  error: Error @needsPermission(permission:"admin")
 }
 
 """

@@ -1,16 +1,6 @@
-from ariadne import MutationType
+from graph.graphql import ObjectTypeResolver
 
-from graph.graphql import Resolver
-
-
-class ApiException(Exception):
-    def __init__(self, message):
-        self.message = message
-
-
-mutation = MutationType()
-
-resolver = Resolver(mutation)
+resolver = ObjectTypeResolver("Mutation")
 
 
 @resolver

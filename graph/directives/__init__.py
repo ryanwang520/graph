@@ -1,6 +1,12 @@
 from ariadne import SchemaDirectiveVisitor
 from graphql import default_field_resolver
 
+# TODO
+# LengthDirective, 验证长度
+# directive @ length(max: Int) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+# uniqueID
+
 
 class PermissionDirective(SchemaDirectiveVisitor):
     def visit_field_definition(self, field, object_type):

@@ -1,11 +1,7 @@
-from ariadne import QueryType
-
-from graph.graphql import Resolver
+from graph.graphql import ObjectTypeResolver
 from graph.models import User
 
-query = QueryType()
-
-resolver = Resolver(query)
+resolver = ObjectTypeResolver("Query")
 
 
 @resolver
@@ -18,7 +14,7 @@ def viewer(_, info):
 
 
 @resolver
-def test_union(*_):
+def error(*_):
     return {"code": 1}
 
 

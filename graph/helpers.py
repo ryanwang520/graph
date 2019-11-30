@@ -12,3 +12,8 @@ def preload_module(pkg):
         pkg = importlib.import_module(pkg)
     for _, modname, _ in pkgutil.iter_modules(pkg.__path__):
         importlib.import_module("." + modname, pkg.__name__)
+
+
+class ApiException(Exception):
+    def __init__(self, message):
+        self.message = message
